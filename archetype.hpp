@@ -15,6 +15,8 @@ private:
     ComponentSignature _signature;
     std::unordered_map<uint32_t, void*> _componentArrays;
 
+    bool _destroyResources = true;
+
     template<typename Component>
     void AllocateFor(uint32_t capacity)
     {
@@ -26,6 +28,29 @@ private:
     }
 
 public:
+    Archetype() = default;
+
+    ~Archetype() noexcept
+    {
+        if (_destroyResources) {
+            for (std::pair<const uint32_t, void*>& pair : _componentArrays) {
+                std::free(pair.second);
+            }
+        }
+    }
+
+    Archetype(const Archetype&) = delete;
+    Archetype& operator=(const Archetype&) = delete;
+
+    Archetype(Archetype&& other) noexcept
+        : _numEntities(std::move(other._numEntities)),
+          _capacity(std::move(other._capacity)),
+          _signature(std::move(other._signature)),
+          _componentArrays(std::move(other._componentArrays))
+    {
+        other._destroyResources = false;
+    }
+   
     template<typename... Components>
     void SetWith(uint32_t capacity = 1u)
     {
@@ -36,14 +61,7 @@ public:
         _signature = query;
         (AllocateFor<Components>(capacity),...);
     }
-
-    ~Archetype() noexcept
-    {
-        for (std::pair<const uint32_t, void*>& pair : _componentArrays) {
-            std::free(pair.second);
-        }
-    }
-
+    
     inline uint32_t GetNumEntities() const noexcept
     {
         return _numEntities;
