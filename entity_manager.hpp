@@ -34,6 +34,18 @@ public:
     }
 
     template<typename... Components>
+    std::tuple<uint32_t, Components*...> GetEntitiesExactlyWith() noexcept
+    {
+        const ComponentSignature query = ComponentSignature::GenerateWith<Components...>();
+        for (Archetype& archetype : _archetypes) {
+            if (archetype.GetSignature().IsExactMatchTo(query)) {
+                return std::tuple<uint32_t, Components*...>(archetype.GetNumEntities(), archetype.GetArrayOf<Components>()...);
+            }
+        }
+        return std::tuple<uint32_t, Components*...>(0u, static_cast<Components*>(nullptr)...);
+    }
+
+    template<typename... Components>
     void AddEntityWith(Components&&... components)
     {
         const ComponentSignature query = ComponentSignature::GenerateWith<Components...>();

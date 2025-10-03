@@ -102,7 +102,7 @@ public:
     void AddEntityWith(Components&&... components)
     {
         ComponentSignature query = ComponentSignature::GenerateWith<Components...>();
-        assert((GetSignature().IsUnset() || GetSignature().IsExactMatchTo(query)) && "The query components do not match!");
+        assert(GetSignature().IsExactMatchTo(query) && "The query components do not match!");
         
         if (IsFull()) {
             const uint32_t newCapacity = GetCapacity() * CAPACITY_EXTEND_MULTIPLIER;
@@ -118,7 +118,7 @@ public:
     void RemoveEntityAt(uint32_t index)
     {
         ComponentSignature query = ComponentSignature::GenerateWith<Components...>();
-        assert((GetSignature().IsUnset() || GetSignature().IsExactMatchTo(query)) && "The query components do not match!");
+        assert(GetSignature().IsExactMatchTo(query) && "The query components do not match!");
         
         if (index < GetNumEntities()) {
             const uint32_t lastFullIndex = GetNumEntities() - 1u;
