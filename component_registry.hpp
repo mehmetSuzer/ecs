@@ -4,17 +4,14 @@
 
 #include <cstdint>
 #include <cassert>
+#include "uninitialisable.hpp"
 
 static constexpr uint32_t MAX_NUM_COMPONENTS = 64u;
 
-class ComponentRegistry final
+class ComponentRegistry final : public Uninitialisable
 {
 private:
     static inline uint32_t _nextID = 0u;
-
-    ComponentRegistry() = delete;
-    ComponentRegistry(const ComponentRegistry&) = delete;
-    ComponentRegistry(ComponentRegistry&&) = delete;
 
 public:
     template<typename Component>
