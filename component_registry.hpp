@@ -4,11 +4,10 @@
 
 #include <cstdint>
 #include <cassert>
-#include "uninitialisable.hpp"
 
 static constexpr uint32_t MAX_NUM_COMPONENTS = 64u;
 
-class ComponentRegistry final : public Uninitialisable
+class ComponentRegistry final
 {
 private:
     static inline uint32_t _nextID = 0u;

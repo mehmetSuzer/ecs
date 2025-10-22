@@ -6,7 +6,7 @@
 #include <vector>
 #include "archetype.hpp"
 
-class EntityManager final : public Uninitialisable
+class EntityManager final
 {
 private:
     inline static std::vector<Archetype> _archetypes;
