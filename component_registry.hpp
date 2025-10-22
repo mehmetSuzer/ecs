@@ -14,6 +14,15 @@ private:
     static inline uint32_t _nextID = 0u;
 
 public:
+    ComponentRegistry() = delete;
+    ~ComponentRegistry() = delete;
+
+    ComponentRegistry(const ComponentRegistry&) = delete;
+    ComponentRegistry& operator=(const ComponentRegistry&) = delete;
+
+    ComponentRegistry(ComponentRegistry&&) = delete;
+    ComponentRegistry operator=(ComponentRegistry&&) = delete;
+
     template<typename Component>
     static inline uint32_t GetIDOf()
     {

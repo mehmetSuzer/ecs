@@ -19,6 +19,15 @@ private:
     }
 
 public:
+    EntityManager() = delete;
+    ~EntityManager() = delete;
+
+    EntityManager(const EntityManager&) = delete;
+    EntityManager& operator=(const EntityManager&) = delete;
+
+    EntityManager(EntityManager&&) = delete;
+    EntityManager operator=(EntityManager&&) = delete;
+
     template<typename... Components>
     static std::vector<std::tuple<uint32_t, Components*...>> GetEntitiesWith() noexcept
     {
