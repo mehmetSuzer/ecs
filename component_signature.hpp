@@ -3,7 +3,7 @@
 #define __COMPONENT_SIGNATURE_HPP__
 
 #include <bitset>
-#include <component_registry.hpp>
+#include "component_registry.hpp"
 
 class ComponentSignature final
 {

@@ -4,23 +4,32 @@
 
 #include <tuple>
 #include <vector>
-#include <archetype.hpp>
+#include "archetype.hpp"
 
 class EntityManager final
 {
 private:
-    std::vector<Archetype> _archetypes;
+    inline static std::vector<Archetype> _archetypes;
 
     template<typename... Components>
-    void AddArchetypeWith()
+    static void AddArchetypeWith()
     {
         _archetypes.emplace_back();
         _archetypes.back().SetWith<Components...>();
     }
 
 public:
+    EntityManager() = delete;
+    ~EntityManager() = delete;
+
+    EntityManager(const EntityManager&) = delete;
+    EntityManager& operator=(const EntityManager&) = delete;
+
+    EntityManager(EntityManager&&) = delete;
+    EntityManager operator=(EntityManager&&) = delete;
+
     template<typename... Components>
-    std::vector<std::tuple<uint32_t, Components*...>> GetEntitiesWith() noexcept
+    static std::vector<std::tuple<uint32_t, Components*...>> GetEntitiesWith() noexcept
     {
         const ComponentSignature query = ComponentSignature::GenerateWith<Components...>();
         std::vector<std::tuple<uint32_t, Components*...>> arrays;
@@ -34,7 +43,7 @@ public:
     }
 
     template<typename... Components>
-    std::tuple<uint32_t, Components*...> GetEntitiesExactlyWith() noexcept
+    static std::tuple<uint32_t, Components*...> GetEntitiesExactlyWith() noexcept
     {
         const ComponentSignature query = ComponentSignature::GenerateWith<Components...>();
         for (Archetype& archetype : _archetypes) {
@@ -46,7 +55,7 @@ public:
     }
 
     template<typename... Components>
-    void AddEntityWith(Components&&... components)
+    static void AddEntityWith(Components&&... components)
     {
         const ComponentSignature query = ComponentSignature::GenerateWith<Components...>();
         for (Archetype& archetype : _archetypes) {
@@ -61,7 +70,7 @@ public:
     }
 
     template<typename... Components>
-    void RemoveEntityAt(uint32_t index)
+    static void RemoveEntityAt(uint32_t index)
     {
         const ComponentSignature query = ComponentSignature::GenerateWith<Components...>();
         for (Archetype& archetype : _archetypes) {

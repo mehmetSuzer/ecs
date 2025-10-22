@@ -3,7 +3,7 @@
 #define __ARCHETYPE_HPP__
 
 #include <unordered_map>
-#include <component_signature.hpp>
+#include "component_signature.hpp"
 
 class Archetype final
 {
@@ -15,6 +15,7 @@ private:
     ComponentSignature _signature;
     std::unordered_map<uint32_t, void*> _componentArrays;
 
+    // TODO: remove this field
     bool _destroyResources = true;
 
     template<typename Component>
